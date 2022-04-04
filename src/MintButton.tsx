@@ -7,11 +7,21 @@ import {CandyMachine} from './candy-machine';
 
 
 export const CTAButton = styled(Button)`
-  display: block !important;
-  margin: 0 auto !important;
-  background-color: var(--title-text-color) !important;
-  min-width: 120px !important;
-  font-size: 1em !important;
+    padding: 6px 0 !important;
+    width: 440px !important;
+    font-family: "JMH-Cthulhumbus-Arcade-UG !important";
+    font-style: normal !important;
+    font-weight: 400 !important;
+    font-size: 32px !important;
+    line-height: 60px !important;
+    color: #ffe199 !important;
+    text-shadow: 0px 2px 0px #b7a372, 0px 4px 0px #42403c !important;
+    border: 3px #ffe199 solid !important;
+    border-radius: 15px !important;
+    text-align: center !important;
+    background: #803934 !important;
+    justify-content: center !important;
+    min-height: 80px !important;
 `;
 
 export const MintButton = ({

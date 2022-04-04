@@ -7,10 +7,15 @@ import {useAnchorWallet} from "@solana/wallet-adapter-react";
 import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 import {GatewayProvider} from '@civic/solana-gateway-react';
 import Countdown from "react-countdown";
-import {Snackbar, Paper, LinearProgress, Chip} from "@material-ui/core";
+import {Snackbar, Paper, LinearProgress, Chip, Typography} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import {toDate, AlertState, getAtaForMint} from './utils';
 import {MintButton} from './MintButton';
+import NftImage from '../src/img/HvnDragon_2.png';
+import Twitter from '../src/img/twitter.png';
+import Discord from '../src/img/discord.png';
+// import {NftDragon} from '../src/img/HvnDragon_2.jpg';
+
 import {
     CandyMachine,
     awaitTransactionSignatureConfirmation,
@@ -22,16 +27,100 @@ import {
 const cluster = process.env.REACT_APP_SOLANA_NETWORK!.toString();
 const decimals = process.env.REACT_APP_SPL_TOKEN_TO_MINT_DECIMALS ? +process.env.REACT_APP_SPL_TOKEN_TO_MINT_DECIMALS!.toString() : 9;
 const splTokenName = process.env.REACT_APP_SPL_TOKEN_TO_MINT_NAME ? process.env.REACT_APP_SPL_TOKEN_TO_MINT_NAME.toString() : "TOKEN";
-
+//right block
 const WalletContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+width: 650px;
+`;
+//dragon nft img block
+const NftImageBlock = styled.div`
+    width: 100%;
+    text-align: center;
+    padding-top: 40px;
+    height: 560px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background: #652c2b;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-left: 105px;
+    padding-right: 105px;
+    overflow: hidden;
+`;
+//suda
+const DragonInfo = styled.div`
+max-width: 750px;
+display: flex;
+justify-content: flex-end;
+flex-direction: column;
+box-shadow:none;
+min-height: 720px;
 `;
 
+const DragonInfoTitle = styled.h1`
+  font-family: "JMH Cthulhumbus Arcade UG";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 43px;
+  color: #ffe199;
+  text-align: left;
+  text-shadow: 0px 2px 0px #b7a372, 0px 4px 0px #42403c;
+`;
+const DragonInfoDesc = styled.p`
+font-family: "Lo-Sumires";
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 32px;
+opacity: 0.9;
+text-align: left;
+color: rgba(255, 234, 185, 0.9);
+padding-right: 20px;
+
+`;
+const DragonInfoSection = styled.section`
+display: flex;
+justify-content: flex-start;
+width: 760px;
+background: #803934;
+backdrop-filter: blur(20px);
+min-height: 160px
+align-items: center
+`;
+const DragonInfoArtical = styled.article`
+padding: 50px 30px;
+height: 60px;
+border-right: 3px solid rgba(255, 225, 153, 0.8);
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: start;
+`;
+const InfoCount = styled.h3`
+width: 180px;
+
+  font-family: "Lo-Sumires";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 52px;
+  line-height: 50px;
+  text-align: start;
+  color: #ffe199;
+  margin: 0;
+  
+`;
+const InfoCountSub = styled.p`
+margin: 0;
+font-family: "Lo-Sumires";
+font-style: normal;
+font-weight: 500;
+font-size: 36px;
+color: #E4C392;
+`;
 const WalletAmount = styled.div`
-  color: black;
+
   width: auto;
   padding: 5px 5px 5px 16px;
   min-width: 48px;
@@ -54,27 +143,41 @@ const WalletAmount = styled.div`
   vertical-align: middle;
   justify-content: flex-start;
   gap: 10px;
+
 `;
 
 const Wallet = styled.ul`
-  flex: 0 0 auto;
   margin: 0;
-  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+  background: #803934;
+  min-height: 100px;
 `;
 
 const ConnectButton = styled(WalletMultiButton)`
-  border-radius: 18px !important;
-  padding: 6px 16px;
-  background-color: #4E44CE;
-  margin: 0 auto;
+    padding: 36px 0;
+    width: 440px;
+    font-family: "JMH-Cthulhumbu-Arcade-UG";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 60px;
+    color: #ffe199;
+    text-shadow: 0px 2px 0px #b7a372, 0px 4px 0px #42403c;
+    border: 3px #ffe199 solid;
+    border-radius: 15px;
+    text-align: center;
+    background: #803934;
+    justify-content: center;
 `;
 
 const NFT = styled(Paper)`
   min-width: 500px;
-  padding: 5px 20px 20px 20px;
   flex: 1 1 auto;
   background-color: var(--card-background-color) !important;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22) !important;
+  box-shadow: none !important;
 `;
 
 const Des = styled(NFT)`
@@ -83,20 +186,20 @@ const Des = styled(NFT)`
 `;
 
 
-const Card = styled(Paper)`
-  display: inline-block;
-  background-color: var(card-background-lighter-color) !important;
-  margin: 5px;
-  min-width: 40px;
-  padding: 24px;
-  h1{
-    margin:0px;
-  }
+const Card = styled.div`
+  display: flex;
+  font-family: "Lo-Sumires";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 52px;
+  line-height: 50px;
+  text-align: start;
 `;
-
+//suda
 const MintButtonContainer = styled.div`
+  
   button.MuiButton-contained:not(.MuiButton-containedPrimary).Mui-disabled {
-    color: #464646;
+    color: #fff
   }
 
   button.MuiButton-contained:not(.MuiButton-containedPrimary):hover,
@@ -174,24 +277,60 @@ const SolExplorerLink = styled.a`
     border-bottom: 2px solid var(--title-text-color);
   }
 `;
-
+//главный контейнер
 const MainContainer = styled.div`
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  flex-direction: row;
   margin-right: 4%;
   margin-left: 4%;
   text-align: center;
-  justify-content: center;
+  justify-content: space-between;
 `;
-
+//suda
 const MintContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex: 1 1 auto;
   flex-wrap: wrap;
   gap: 20px;
+  max-height: 800px;
+`;
+
+const SocialBlock = styled.section`
+display: flex;
+justify-content: flex-start;
+align-items: center;
+`;
+const SocialIcon = styled.img`
+
+padding-left: 10px;
+
+`;
+const SocialLink = styled.a`
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 6px 16px;
+background: rgba(196, 196, 196, 0.1);
+box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+border-radius: 20px;
+margin-right: 34px;
+margin-bottom: 50px;
+text-decoration: none;
+&:hover{
+    opacity: 0.8;
+  }
+`;
+
+const SocialLinkName =  styled.p`
+font-family: "Lo-Sumires";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 31px;
+  margin: 0;
+  
 `;
 
 const DesContainer = styled.div`
@@ -210,27 +349,25 @@ const Price = styled(Chip)`
 `;
 
 const Image = styled.img`
-  height: 400px;
-  width: auto;
-  border-radius: 7px;
-  box-shadow: 5px 5px 40px 5px rgba(0,0,0,0.5);
+  height: 440px;
+  width: 440px;
 `;
 
 const BorderLinearProgress = styled(LinearProgress)`
-  margin: 20px;
-  height: 10px !important;
-  border-radius: 30px;
-  border: 2px solid white;
-  box-shadow: 5px 5px 40px 5px rgba(0,0,0,0.5);
-  background-color:var(--main-text-color) !important;
+  height: 25px !important;
+  border-radius: 20px;
+  border: 9px solid #6C3635;
+  width: 100%;
+  background-color:#3d28277a !important;
   
   > div.MuiLinearProgress-barColorPrimary{
-    background-color:var(--title-text-color) !important;
+    background-color:#3d28277a !important;
   }
 
   > div.MuiLinearProgress-bar1Determinate {
-    border-radius: 30px !important;
-    background-image: linear-gradient(270deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.5));
+    border-radius: 10px !important;
+    background-color:#3d28277a !important;
+    background: linear-gradient(90deg, #5e8e56 4.17%, #7bdc6b 99.38%);
   }
 `;
 
@@ -412,9 +549,12 @@ const Home = (props: HomeProps) => {
 
     const renderGoLiveDateCounter = ({days, hours, minutes, seconds}: any) => {
         return (
-            <div><Card elevation={1}><h1>{days}</h1>Days</Card><Card elevation={1}><h1>{hours}</h1>
-                Hours</Card><Card elevation={1}><h1>{minutes}</h1>Mins</Card><Card elevation={1}>
-                <h1>{seconds}</h1>Secs</Card></div>
+            <Card>{hours}:{minutes}:{seconds}</Card>
+        );
+    };
+    const renderGoLiveDateCounter2 = ({days, hours, minutes, seconds}: any) => {
+        return (
+            <Card>{hours - 1}:{minutes}:{seconds}</Card>
         );
     };
 
@@ -544,59 +684,72 @@ const Home = (props: HomeProps) => {
         isEnded,
         isPresale
     ]);
-
+    console.log(isActive)
     return (
         <main>
             <MainContainer>
-                <WalletContainer>
-                    <Logo><a href="http://localhost:3000/" target="_blank" rel="noopener noreferrer"><img alt=""
-                                                                                                          src="logo.png"/></a></Logo>
-                    <Menu>
-                        <li><a href="http://localhost:3000/" target="_blank" rel="noopener noreferrer">Menu 1</a>
-                        </li>
-                        <li><a href="http://localhost:3000/" target="_blank"
-                               rel="noopener noreferrer">Menu 2</a></li>
-                        <li><a href="http://localhost:3000/" target="_blank"
-                               rel="noopener noreferrer">Menu 3</a></li>
-                    </Menu>
-                    <Wallet>
-                        {wallet ?
-                            <WalletAmount>{(balance || 0).toLocaleString()} SOL<ConnectButton/></WalletAmount> :
-                            <ConnectButton>Connect Wallet</ConnectButton>}
-                    </Wallet>
-                </WalletContainer>
-                <ShimmerTitle>MINT IS LIVE !</ShimmerTitle>
+                
+                {/* <ShimmerTitle>MINT IS LIVE !</ShimmerTitle> */}
                 <br/>
                 <MintContainer>
                     <DesContainer>
-                        <NFT elevation={3}>
-                            <h2>My NFT</h2>
+                    <NFT elevation={3}>
+                        <DragonInfo>
+                            
+                            <DragonInfoTitle>Empire Dragons Adventure</DragonInfoTitle>
+                            <DragonInfoDesc>Multiplayer support for up to four players! This is a "belt-scroll" x
+                            "free exploration" action game. Make full use of each character's
+                            individuality, solve the gimmicks hidden in the MAP, and defeat the
+                            final boss "Ancient Dragon" in all 5 stages!</DragonInfoDesc>
+                            <DragonInfoDesc>A world where monsters are rampant. The overwhelming numbers and power
+                            of the monsters threaten the survival of the human race. Then, he
+                            hears a rumor about dragons.</DragonInfoDesc>
+                            <DragonInfoSection>
+                            <DragonInfoArtical>
+                            <InfoCount>{(wallet && !isActive && !isEnded && candyMachine?.state.goLiveDate && (!isWLOnly || whitelistTokenBalance > 0)) ? (<Countdown
+                                        date={toDate(candyMachine?.state.goLiveDate)}
+                                        onMount={({completed}) => completed && setIsActive(!isEnded)}
+                                        onComplete={() => {
+                                            setIsActive(!isEnded);
+                                        }}
+                                        renderer={renderGoLiveDateCounter2}
+                                    />): "00:00:00"}</InfoCount>
+                                <InfoCountSub>Whitelist</InfoCountSub>
+                            </DragonInfoArtical>
+                            <DragonInfoArtical>
+                            <InfoCount>{(wallet && !isActive && !isEnded && candyMachine?.state.goLiveDate && (!isWLOnly || whitelistTokenBalance > 0)) ? (<Countdown
+                                        date={toDate(candyMachine?.state.goLiveDate)}
+                                        onMount={({completed}) => completed && setIsActive(!isEnded)}
+                                        onComplete={() => {
+                                            setIsActive(!isEnded);
+                                        }}
+                                        renderer={renderGoLiveDateCounter}
+                                    />): "00:00:00"}</InfoCount>
+                            <InfoCountSub>Public</InfoCountSub>
+                            </DragonInfoArtical>
+                            <DragonInfoArtical
+                            style={{
+                                border:"none",
+                            }}
+                            >
+                            <InfoCount>{wallet ? (itemsRedeemed < 100? (1000 - (itemsRedeemed)): "Sold out"): 1000}</InfoCount>
+                            <InfoCountSub>WL Remain</InfoCountSub>
+                            </DragonInfoArtical>
+                        </DragonInfoSection>
+                        </DragonInfo>
+                        
+                            {/* <h2>My NFT</h2>
                             <br/>
                             <div><Price
                                 label={isActive && whitelistEnabled && (whitelistTokenBalance > 0) ? (whitelistPrice + " " + priceLabel) : (price + " " + priceLabel)}/><Image
                                 src="cool-cats.gif"
                                 alt="NFT To Mint"/></div>
-                            <br/>
-                            {wallet && isActive && whitelistEnabled && (whitelistTokenBalance > 0) && isBurnToken &&
-                              <h3>You own {whitelistTokenBalance} WL mint {whitelistTokenBalance > 1 ? "tokens" : "token" }.</h3>}
-                            {wallet && isActive && whitelistEnabled && (whitelistTokenBalance > 0) && !isBurnToken &&
-                              <h3>You are whitelisted and allowed to mint.</h3>}
-
-                            {wallet && isActive && endDate && Date.now() < endDate.getTime() &&
-                              <Countdown
-                                date={toDate(candyMachine?.state?.endSettings?.number)}
-                                onMount={({completed}) => completed && setIsEnded(true)}
-                                onComplete={() => {
-                                    setIsEnded(true);
-                                }}
-                                renderer={renderEndDateCounter}
-                              />}
-                            {wallet && isActive &&
-                              <h3>TOTAL MINTED : {itemsRedeemed} / {itemsAvailable}</h3>}
-                            {wallet && isActive && <BorderLinearProgress variant="determinate"
-                                                                         value={100 - (itemsRemaining * 100 / itemsAvailable)}/>}
-                            <br/>
-                            <MintButtonContainer>
+                            <br/> */}
+                            {/* {wallet && isActive && <BorderLinearProgress variant="determinate"
+                                                                         value={100 - (itemsRemaining * 100 / itemsAvailable)}/>} */}
+                            {/* <ConnectButton/> */}
+                            {/* <MintButtonContainer>
+                            
                                 {!isActive && !isEnded && candyMachine?.state.goLiveDate && (!isWLOnly || whitelistTokenBalance > 0) ? (
                                     <Countdown
                                         date={toDate(candyMachine?.state.goLiveDate)}
@@ -650,13 +803,36 @@ const Home = (props: HomeProps) => {
                                         ) :
                                         <h1>Mint is private.</h1>
                                         )}
-                            </MintButtonContainer>
-                            <br/>
-                            {wallet && isActive && solanaExplorerLink &&
-                              <SolExplorerLink href={solanaExplorerLink} target="_blank">View on Solscan</SolExplorerLink>}
+                            </MintButtonContainer> */}
                         </NFT>
+                        <SocialBlock>
+                            <SocialLink href="#" className="socials">
+                                <SocialLinkName style={{
+                                    color: "#1da1f2",
+                                    textShadow: "0px 2px 0px #3f4549"
+                                }}>Twitter</SocialLinkName>
+                                <SocialIcon
+                                style={{
+                                    width:"28px",
+                                    height:"25px",
+                                }}  
+                                src={Twitter}
+                                ></SocialIcon>
+                            </SocialLink>
+                            <SocialLink href="#">
+                                <SocialLinkName style={{color:" #5865F2",
+                                    textShadow:"0px 2px 0px #484C77",}}>Discord</SocialLinkName>
+                                    <SocialIcon 
+                                    style={{
+                                        width:"35px",
+                                        height:"27px",
+                                    }} 
+                                    src={Discord}
+                                    ></SocialIcon>
+                            </SocialLink>
+                        </SocialBlock>
                     </DesContainer>
-                    <DesContainer>
+                    {/* <DesContainer>
                         <Des elevation={2}>
                             <LogoAligner><img src="logo.png" alt=""></img><GoldTitle>TITLE 1</GoldTitle></LogoAligner>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -684,8 +860,69 @@ const Home = (props: HomeProps) => {
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                 incididunt.</p>
                         </Des>
-                    </DesContainer>
+                    </DesContainer> */}
                 </MintContainer>
+                <WalletContainer>
+                    <NftImageBlock>
+                        <Image src={NftImage}
+                                // src="HvnDragon_2.jpg"
+                                alt="NFT To Mint"/>
+                         {/* количесво заминченых */}
+                        <div style={{ 
+                            position: "relative",
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}>
+                            <BorderLinearProgress
+                            variant="determinate"
+                            value={100 - (itemsRemaining * 100 / itemsAvailable)}
+                            ></BorderLinearProgress>
+                            <Typography
+                                style={{
+                                    position: "absolute",
+                                    color: "white",
+                                    zIndex: 2,
+                                    fontFamily: "Press-Start-2P",
+                                    fontSize: "13px",
+                                    marginTop: "3px"
+                                    
+                                }}
+                                >
+                                {itemsAvailable - itemsRemaining}/{itemsAvailable}
+                                </Typography>
+                        </div> 
+                         {/* <BorderLinearProgress variant="determinate"
+                                                                         value={100 - (itemsRemaining * 100 / itemsAvailable)}/>
+                         {wallet && isActive &&
+                              <h3>TOTAL MINTED : {itemsRedeemed} / {itemsAvailable}</h3>} */}
+                            {/* {wallet && isActive && } */}
+                    </NftImageBlock>
+                    <Wallet>
+                        
+                        {wallet ?
+                                <MintButton
+                                candyMachine={candyMachine}
+                                isMinting={isMinting}
+                                isActive={isActive}
+                                isEnded={isEnded}
+                                isSoldOut={isSoldOut}
+                                onMint={onMint}
+                            />:
+                        
+                            <ConnectButton>Connect Wallet</ConnectButton>
+                        //         <MintButton
+                        //     candyMachine={candyMachine}
+                        //     isMinting={isMinting}
+                        //     isActive={isActive}
+                        //     isEnded={isEnded}
+                        //     isSoldOut={isSoldOut}
+                        //     onMint={onMint}
+                        // /> :
+                            }
+                    </Wallet>
+                </WalletContainer>
             </MainContainer>
             <Snackbar
                 open={alertState.open}

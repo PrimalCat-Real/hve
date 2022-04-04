@@ -1,15 +1,33 @@
+@font-face {
+  font-family: "JMH-Cthulhumbu-Arcade-UG";
+  src: url("./fonts/JmhcthulhumbusarcadeugRegular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Press-Start-2P";
+  src: url("./fonts/PressStart2P-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Lo-Sumires";
+  src: url("./fonts/LoSumires.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
+}
+
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Lo-Sumires";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #303030;
+  background-color: none;
   color: #FFFFFF;
 }
 
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: "Lo-Sumires";
 }
