@@ -95,7 +95,7 @@ max-height: 720px;
 `;
 
 const DragonInfoTitle = styled.h1`
-  font-family: JMH Cthulhumbu Arcade UG;
+  font-family: "JMH Cthulhumbus Arcade UG";
   font-style: normal;
   font-weight: 400;
   font-size: calc(28px + 16 * (100vw / 1280));
@@ -865,7 +865,7 @@ const Home = (props: HomeProps) => {
                     <DesContainer>
                     <NFT elevation={3}>
                         <DragonInfo>
-                            <DragonText>
+                        <DragonText>
                             <DragonInfoTitle>Heaven Dragons Empire</DragonInfoTitle>
                             <DragonInfoDesc>
 Heaven Dragons Empire is a premium collection of 1525 1 by 1 dragons living on the Solana blockchain, and thanks to it’s utility manages to cover the 2 types of people that exist in the NFTs world, the "Flippers", and the "Holders".
@@ -905,8 +905,8 @@ The Heaven Dragons Empire collection aims to create an staking game with differe
                                 border:"none",
                             }}
                             >
-                            <InfoCount>{wallet ? (itemsRedeemed < 100? (1000 - (itemsRedeemed)): "Sold out"): 1000}</InfoCount>
-                            <InfoCountSub>WL Remain</InfoCountSub>
+                            <InfoCount>1000</InfoCount>
+                            <InfoCountSub>WL Supply</InfoCountSub>
                             </DragonInfoArtical>
                         </DragonInfoSection>
                         </DragonInfo>
@@ -1048,23 +1048,7 @@ The Heaven Dragons Empire collection aims to create an staking game with differe
                             alignItems: "center",
                             justifyContent: "center",
                         }}>
-                            <BorderLinearProgress
-                            variant="determinate"
-                            value={100 - (itemsRemaining * 100 / itemsAvailable)}
-                            ></BorderLinearProgress>
-                            <Typography
-                                style={{
-                                    position: "absolute",
-                                    color: "white",
-                                    zIndex: 2,
-                                    fontFamily: "Press-Start-2P",
-                                    fontSize: "13px",
-                                    marginTop: "3px"
-                                    
-                                }}
-                                >
-                                {itemsAvailable - itemsRemaining}/{itemsAvailable}
-                                </Typography>
+                            
                         </div> 
                          {/* <BorderLinearProgress variant="determinate"
                                                                          value={100 - (itemsRemaining * 100 / itemsAvailable)}/>
@@ -1075,6 +1059,7 @@ The Heaven Dragons Empire collection aims to create an staking game with differe
                     <Wallet>
                         
                         {wallet ?
+                        
                                 <MintButton
                                 candyMachine={candyMachine}
                                 isMinting={isMinting}
