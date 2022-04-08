@@ -95,7 +95,7 @@ max-height: 720px;
 `;
 
 const DragonInfoTitle = styled.h1`
-  font-family: "JMH Cthulhumbus Arcade UG";
+  font-family: JMH Cthulhumbu Arcade UG;
   font-style: normal;
   font-weight: 400;
   font-size: calc(28px + 16 * (100vw / 1280));
@@ -322,11 +322,6 @@ const Card = styled.div`
   text-align: start;
 `;
 //suda
-const MintTest = styled.div`
-font-family: "JMH Cthulhumbus Arcade UG";
-font-style: normal;
-font-weight: 400;
-`;
 const MintButtonContainer = styled.div`
 font-family: "JMH Cthulhumbus Arcade UG";
 font-style: normal;
@@ -440,7 +435,6 @@ const MainContainer = styled.div`
     }
 `;
 //suda
-
 const MintContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -872,13 +866,13 @@ const Home = (props: HomeProps) => {
                     <NFT elevation={3}>
                         <DragonInfo>
                             <DragonText>
-                            <DragonInfoTitle>Empire Dragons Adventure</DragonInfoTitle>
+                            <DragonInfoTitle>Heaven Dragons Empire</DragonInfoTitle>
                             <DragonInfoDesc>
 Heaven Dragons Empire is a premium collection of 1525 1 by 1 dragons living on the Solana blockchain, and thanks to it’s utility manages to cover the 2 types of people that exist in the NFTs world, the "Flippers", and the "Holders".
-The Heaven Dragons Empire collection aims to create an staking game with different types of attributes to its staking. H.D.E objective is to create an elite and active community where everyone can help each other. , and defeat the
-                            final boss "Ancient Dragon" in all 5 stages!</DragonInfoDesc>
-                            <DragonInfoDesc>“Reback“ System 
-If you are able to mint a dragon the wallet used to mint will be set as the original SOL royalty account for that specific dragon, every time that the dragon is traded the royalties are automatically sent to the original minters wallet. ( Don’t delete the wallet that you used to minted otherwise you will lose this feature )</DragonInfoDesc>
+The Heaven Dragons Empire collection aims to create an staking game with different types of attributes to its staking. H.D.E objective is to create an elite and active community where everyone can help each other.</DragonInfoDesc>
+                            <DragonInfoDesc>“Reback System“
+
+                            <br/>If you are able to mint a dragon the wallet used to mint will be set as the original SOL royalty account for that specific dragon, every time that the dragon is traded the royalties are automatically sent to the original minters wallet. ( Don’t delete the wallet that you used to minted otherwise you will lose this feature )</DragonInfoDesc>
                             </DragonText>
                             
                             <DragonInfoSection>
@@ -911,8 +905,8 @@ If you are able to mint a dragon the wallet used to mint will be set as the orig
                                 border:"none",
                             }}
                             >
-                            <InfoCount>1000</InfoCount>
-                            <InfoCountSub>WL Supply</InfoCountSub>
+                            <InfoCount>{wallet ? (itemsRedeemed < 100? (1000 - (itemsRedeemed)): "Sold out"): 1000}</InfoCount>
+                            <InfoCountSub>WL Remain</InfoCountSub>
                             </DragonInfoArtical>
                         </DragonInfoSection>
                         </DragonInfo>
@@ -1054,7 +1048,23 @@ If you are able to mint a dragon the wallet used to mint will be set as the orig
                             alignItems: "center",
                             justifyContent: "center",
                         }}>
-                            
+                            <BorderLinearProgress
+                            variant="determinate"
+                            value={100 - (itemsRemaining * 100 / itemsAvailable)}
+                            ></BorderLinearProgress>
+                            <Typography
+                                style={{
+                                    position: "absolute",
+                                    color: "white",
+                                    zIndex: 2,
+                                    fontFamily: "Press-Start-2P",
+                                    fontSize: "13px",
+                                    marginTop: "3px"
+                                    
+                                }}
+                                >
+                                {itemsAvailable - itemsRemaining}/{itemsAvailable}
+                                </Typography>
                         </div> 
                          {/* <BorderLinearProgress variant="determinate"
                                                                          value={100 - (itemsRemaining * 100 / itemsAvailable)}/>
@@ -1065,7 +1075,6 @@ If you are able to mint a dragon the wallet used to mint will be set as the orig
                     <Wallet>
                         
                         {wallet ?
-                            <MintTest>
                                 <MintButton
                                 candyMachine={candyMachine}
                                 isMinting={isMinting}
@@ -1073,7 +1082,7 @@ If you are able to mint a dragon the wallet used to mint will be set as the orig
                                 isEnded={isEnded}
                                 isSoldOut={isSoldOut}
                                 onMint={onMint}
-                            /></MintTest>:
+                            />:
                         
                             <ConnectButton>Connect Wallet</ConnectButton>
                         //         <MintButton
