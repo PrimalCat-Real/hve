@@ -14,6 +14,7 @@ import {MintButton} from './MintButton';
 import NftImage from '../src/img/HvnDragon_2.png';
 import Twitter from '../src/img/twitter.png';
 import Discord from '../src/img/discord.png';
+
 // import {NftDragon} from '../src/img/HvnDragon_2.jpg';
 
 import {
@@ -24,12 +25,28 @@ import {
     CANDY_MACHINE_PROGRAM,
 } from "./candy-machine";
 
+  
+
 const cluster = process.env.REACT_APP_SOLANA_NETWORK!.toString();
 const decimals = process.env.REACT_APP_SPL_TOKEN_TO_MINT_DECIMALS ? +process.env.REACT_APP_SPL_TOKEN_TO_MINT_DECIMALS!.toString() : 9;
 const splTokenName = process.env.REACT_APP_SPL_TOKEN_TO_MINT_NAME ? process.env.REACT_APP_SPL_TOKEN_TO_MINT_NAME.toString() : "TOKEN";
 //right block
 const WalletContainer = styled.div`
-width: 650px;
+max-width: 650px;
+width: 100%;
+@media (max-width: 480px) {
+    .wallet-adapter-modal-container {
+        margin: 1rem;
+        min-height: calc(100vh - 2rem); /* 100vh - 2 * margin */
+        
+        max-width: 100%;
+        transform: scale(0.9);
+        height: 100vh;
+        
+    }
+    order: -1;
+    height:${window.innerHeight}px;
+}
 `;
 //dragon nft img block
 const NftImageBlock = styled.div`
@@ -47,6 +64,14 @@ const NftImageBlock = styled.div`
     padding-left: 105px;
     padding-right: 105px;
     overflow: hidden;
+@media (max-width: 480px) {
+    height:70%;
+}
+@media (max-width: 560px) {
+    
+    padding: 0;
+  }
+    
 `;
 //suda
 const DragonInfo = styled.div`
@@ -55,48 +80,122 @@ display: flex;
 justify-content: flex-end;
 flex-direction: column;
 box-shadow:none;
-min-height: 720px;
+max-height: 720px;
+@media (max-width: 1540px) {
+    max-width: 100%;
+    align-items: center;
+    
+  }
+  @media (max-width: 480px) {
+    max-height: 100%;
+    min-height: 100%;
+    justify-content: space-between;
+    
+  }
 `;
 
 const DragonInfoTitle = styled.h1`
   font-family: "JMH Cthulhumbus Arcade UG";
   font-style: normal;
   font-weight: 400;
-  font-size: 48px;
+  font-size: calc(28px + 16 * (100vw / 1280));
   line-height: 43px;
   color: #ffe199;
   text-align: left;
   text-shadow: 0px 2px 0px #b7a372, 0px 4px 0px #42403c;
+  margin-top: 90px;
+  @media (max-width: 1540px) {
+    text-align: center;
+    margin-top: 0px;
+  }
+  @media (max-width: 560px) {
+    font-size: calc(18px + 16 * (100vw / 1280));
+    
+  }
 `;
 const DragonInfoDesc = styled.p`
 font-family: "Lo-Sumires";
 font-style: normal;
 font-weight: 500;
-font-size: 32px;
-line-height: 32px;
+font-size: calc(12px + 16 * (100vw / 1280));
+line-height: calc(10px + 16 * (100vw / 1280));
 opacity: 0.9;
 text-align: left;
 color: rgba(255, 234, 185, 0.9);
 padding-right: 20px;
-
+@media (max-width: 1540px) {
+    text-align: center;
+  }
+@media (min-width: 1540px) {
+    font-size: 28px;
+    width: 50vw;
+    line-height: 28px;
+}
+@media (max-width: 480px) {
+text-align: center;
+padding-right: 15px;
+padding-left: 15px;
+font-size: calc(10px + 16 * (100vw / 580));
+line-height:22px;
+padding-bottom: 3px;
+}
 `;
 const DragonInfoSection = styled.section`
 display: flex;
 justify-content: flex-start;
-width: 760px;
+max-width: 760px;
 background: #803934;
 backdrop-filter: blur(20px);
-min-height: 160px
-align-items: center
+min-height: 160px;
+align-items: center;
+@media (max-width: 1540px) {
+    width: 100%;
+    align-self: center;
+    max-width: 100%;
+    justify-content: space-around;
+  }
+@media (max-width: 740px) {
+    flex-direction: row;
+}
+@media (max-width: 480px) {
+    flex-direction: column;
+    min-height: 320px;
+}
+`;
+const LineSpacer = styled.div`
+height: calc(90px + 16 * (100vw / 1280));
+background-color: #ffe199;
+width: 4px;
+border-radius: 3px;
+opacity: 0.9;
+@media (max-width: 480px) {
+   
+    height: 4px;
+    width: calc(90px + 16 * (100vw / 1280));
+}
+`;
+const DragonText = styled.div`
+@media (max-width: 480px) {
+    height: ${window.innerHeight};
+  }
+
 `;
 const DragonInfoArtical = styled.article`
-padding: 50px 30px;
+padding: 30px 30px;
 height: 60px;
-border-right: 3px solid rgba(255, 225, 153, 0.8);
+
 display: flex;
 flex-direction: column;
 justify-content: center;
 text-align: start;
+@media (max-width: 740px) {
+    padding: 30px 0px;
+    text-align: center;
+}
+@media (max-width: 480px) {
+    padding: 20px 30px;
+    
+  }
 `;
 const InfoCount = styled.h3`
 width: 180px;
@@ -104,11 +203,21 @@ width: 180px;
   font-family: "Lo-Sumires";
   font-style: normal;
   font-weight: 500;
-  font-size: 52px;
+  font-size: calc(30px + 16 * (100vw / 1280));
   line-height: 50px;
   text-align: start;
   color: #ffe199;
   margin: 0;
+  @media (max-width: 1540px) {
+    text-align: center;
+  }
+  @media (max-width: 560px) {
+    text-align: center;
+    width: 100%;
+}
+@media (max-width: 450px) {
+   
+}
   
 `;
 const InfoCountSub = styled.p`
@@ -116,14 +225,15 @@ margin: 0;
 font-family: "Lo-Sumires";
 font-style: normal;
 font-weight: 500;
-font-size: 36px;
+font-size: calc(20px + 16 * (100vw / 1280));
 color: #E4C392;
+@media (max-width: 1540px) {
+  }
 `;
 const WalletAmount = styled.div`
 
   width: auto;
   padding: 5px 5px 5px 16px;
-  min-width: 48px;
   min-height: auto;
   border-radius: 22px;
   background-color: var(--main-text-color);
@@ -154,12 +264,15 @@ const Wallet = styled.ul`
   padding: 30px 0;
   background: #803934;
   min-height: 100px;
+  @media (max-width: 480px) {
+    height:20%;
+    }   
 `;
 
 const ConnectButton = styled(WalletMultiButton)`
     padding: 36px 0;
     width: 440px;
-    font-family: "JMH-Cthulhumbu-Arcade-UG";
+    font-family: "JMH Cthulhumbu Arcade UG";
     font-style: normal;
     font-weight: 400;
     font-size: 42px;
@@ -171,10 +284,23 @@ const ConnectButton = styled(WalletMultiButton)`
     text-align: center;
     background: #803934;
     justify-content: center;
+    &:hover{
+        background: #ffe199;
+        color: #803934;
+        text-shadow:none;
+        border: 0px;
+        text-shadow: 0px 1.5px 0px #421E1D, 0px 3px 0px #2C1514;
+        transition: 0.2s;
+    }
+    @media (max-width: 560px) {
+        width:${window.innerWidth * 0.9}px !important;
+        padding: 40px 0;
+        font-size: 38px;
+      }
+    
 `;
 
 const NFT = styled(Paper)`
-  min-width: 500px;
   flex: 1 1 auto;
   background-color: var(--card-background-color) !important;
   box-shadow: none !important;
@@ -196,8 +322,20 @@ const Card = styled.div`
   text-align: start;
 `;
 //suda
+const MintTest = styled.div`
+font-family: "JMH Cthulhumbus Arcade UG";
+font-style: normal;
+font-weight: 400;
+`;
 const MintButtonContainer = styled.div`
-  
+font-family: "JMH Cthulhumbus Arcade UG";
+font-style: normal;
+font-weight: 400;
+font-size: 54px;
+line-height: 60px;
+color: #ffe199;
+text-shadow: 0px 2px 0px #b7a372, 0px 4px 0px #42403c;
+border-radius: 15px;
   button.MuiButton-contained:not(.MuiButton-containedPrimary).Mui-disabled {
     color: #fff
   }
@@ -286,21 +424,49 @@ const MainContainer = styled.div`
   margin-left: 4%;
   text-align: center;
   justify-content: space-between;
+  @media (max-width: 1540px) { 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height 100%;
+  }
+  @media (max-width: 740px) {
+  margin-right: 4%;
+  margin-left: 4%;
+  }
+  @media (max-width: 480px) {
+    margin-right: 0;
+    margin-left: 0;
+    }
 `;
 //suda
+
 const MintContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex: 1 1 auto;
   flex-wrap: wrap;
   gap: 20px;
-  max-height: 800px;
+  @media (max-width: 1540px) {
+    margin-bottom:40px;
+    
+  }
+  @media (max-width: 480px) {
+    height: 160vh;
+  }
+
 `;
 
 const SocialBlock = styled.section`
 display: flex;
 justify-content: flex-start;
 align-items: center;
+@media (max-width: 1540px) {
+    align-self: center;
+    margin-top:40px;
+  }
+  
+
 `;
 const SocialIcon = styled.img`
 
@@ -320,6 +486,9 @@ margin-bottom: 50px;
 text-decoration: none;
 &:hover{
     opacity: 0.8;
+  }
+  @media (max-width: 560px) {
+    margin-right: 4px;
   }
 `;
 
@@ -351,6 +520,10 @@ const Price = styled(Chip)`
 const Image = styled.img`
   height: 440px;
   width: 440px;
+  @media (max-width: 560px) {
+    height:${window.innerWidth * 0.9}px;
+    width:${window.innerWidth * 0.9}px;
+  }
 `;
 
 const BorderLinearProgress = styled(LinearProgress)`
@@ -368,6 +541,9 @@ const BorderLinearProgress = styled(LinearProgress)`
     border-radius: 10px !important;
     background-color:#3d28277a !important;
     background: linear-gradient(90deg, #5e8e56 4.17%, #7bdc6b 99.38%);
+  }
+  @media (max-width: 560px) {
+    width:${window.innerWidth * 0.86}px ;
   }
 `;
 
@@ -695,15 +871,16 @@ const Home = (props: HomeProps) => {
                     <DesContainer>
                     <NFT elevation={3}>
                         <DragonInfo>
-                            
+                            <DragonText>
                             <DragonInfoTitle>Empire Dragons Adventure</DragonInfoTitle>
-                            <DragonInfoDesc>Multiplayer support for up to four players! This is a "belt-scroll" x
-                            "free exploration" action game. Make full use of each character's
-                            individuality, solve the gimmicks hidden in the MAP, and defeat the
+                            <DragonInfoDesc>
+Heaven Dragons Empire is a premium collection of 1525 1 by 1 dragons living on the Solana blockchain, and thanks to it’s utility manages to cover the 2 types of people that exist in the NFTs world, the "Flippers", and the "Holders".
+The Heaven Dragons Empire collection aims to create an staking game with different types of attributes to its staking. H.D.E objective is to create an elite and active community where everyone can help each other. , and defeat the
                             final boss "Ancient Dragon" in all 5 stages!</DragonInfoDesc>
-                            <DragonInfoDesc>A world where monsters are rampant. The overwhelming numbers and power
-                            of the monsters threaten the survival of the human race. Then, he
-                            hears a rumor about dragons.</DragonInfoDesc>
+                            <DragonInfoDesc>“Reback“ System 
+If you are able to mint a dragon the wallet used to mint will be set as the original SOL royalty account for that specific dragon, every time that the dragon is traded the royalties are automatically sent to the original minters wallet. ( Don’t delete the wallet that you used to minted otherwise you will lose this feature )</DragonInfoDesc>
+                            </DragonText>
+                            
                             <DragonInfoSection>
                             <DragonInfoArtical>
                             <InfoCount>{(wallet && !isActive && !isEnded && candyMachine?.state.goLiveDate && (!isWLOnly || whitelistTokenBalance > 0)) ? (<Countdown
@@ -716,6 +893,7 @@ const Home = (props: HomeProps) => {
                                     />): "00:00:00"}</InfoCount>
                                 <InfoCountSub>Whitelist</InfoCountSub>
                             </DragonInfoArtical>
+                            <LineSpacer></LineSpacer>
                             <DragonInfoArtical>
                             <InfoCount>{(wallet && !isActive && !isEnded && candyMachine?.state.goLiveDate && (!isWLOnly || whitelistTokenBalance > 0)) ? (<Countdown
                                         date={toDate(candyMachine?.state.goLiveDate)}
@@ -727,13 +905,14 @@ const Home = (props: HomeProps) => {
                                     />): "00:00:00"}</InfoCount>
                             <InfoCountSub>Public</InfoCountSub>
                             </DragonInfoArtical>
+                            <LineSpacer></LineSpacer>
                             <DragonInfoArtical
                             style={{
                                 border:"none",
                             }}
                             >
-                            <InfoCount>{wallet ? (itemsRedeemed < 100? (1000 - (itemsRedeemed)): "Sold out"): 1000}</InfoCount>
-                            <InfoCountSub>WL Remain</InfoCountSub>
+                            <InfoCount>1000</InfoCount>
+                            <InfoCountSub>WL Supply</InfoCountSub>
                             </DragonInfoArtical>
                         </DragonInfoSection>
                         </DragonInfo>
@@ -806,7 +985,7 @@ const Home = (props: HomeProps) => {
                             </MintButtonContainer> */}
                         </NFT>
                         <SocialBlock>
-                            <SocialLink href="#" className="socials">
+                            <SocialLink href="https://twitter.com/HeavenDragonsEP" className="socials">
                                 <SocialLinkName style={{
                                     color: "#1da1f2",
                                     textShadow: "0px 2px 0px #3f4549"
@@ -819,7 +998,7 @@ const Home = (props: HomeProps) => {
                                 src={Twitter}
                                 ></SocialIcon>
                             </SocialLink>
-                            <SocialLink href="#">
+                            <SocialLink href="https://discord.gg/gGnZK4mnwY">
                                 <SocialLinkName style={{color:" #5865F2",
                                     textShadow:"0px 2px 0px #484C77",}}>Discord</SocialLinkName>
                                     <SocialIcon 
@@ -875,23 +1054,7 @@ const Home = (props: HomeProps) => {
                             alignItems: "center",
                             justifyContent: "center",
                         }}>
-                            <BorderLinearProgress
-                            variant="determinate"
-                            value={100 - (itemsRemaining * 100 / itemsAvailable)}
-                            ></BorderLinearProgress>
-                            <Typography
-                                style={{
-                                    position: "absolute",
-                                    color: "white",
-                                    zIndex: 2,
-                                    fontFamily: "Press-Start-2P",
-                                    fontSize: "13px",
-                                    marginTop: "3px"
-                                    
-                                }}
-                                >
-                                {itemsAvailable - itemsRemaining}/{itemsAvailable}
-                                </Typography>
+                            
                         </div> 
                          {/* <BorderLinearProgress variant="determinate"
                                                                          value={100 - (itemsRemaining * 100 / itemsAvailable)}/>
@@ -902,6 +1065,7 @@ const Home = (props: HomeProps) => {
                     <Wallet>
                         
                         {wallet ?
+                            <MintTest>
                                 <MintButton
                                 candyMachine={candyMachine}
                                 isMinting={isMinting}
@@ -909,7 +1073,7 @@ const Home = (props: HomeProps) => {
                                 isEnded={isEnded}
                                 isSoldOut={isSoldOut}
                                 onMint={onMint}
-                            />:
+                            /></MintTest>:
                         
                             <ConnectButton>Connect Wallet</ConnectButton>
                         //         <MintButton
